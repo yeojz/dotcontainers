@@ -1,0 +1,23 @@
+services:
+  code:
+    image: ${IMAGE}
+    tty: true
+    stdin_open: true
+    working_dir: /workspaces
+    # Keep container running for exec access
+    command: tail -f /dev/null
+    volumes:
+      # Mount the repository (parent of docker/ directory)
+      - ${REPO}:/workspaces/repo:rw
+      - ${WORKTREES}:/workspaces/worktrees:rw
+      - ${DOCS}:/workspaces/docs:rw
+
+      # Share git and ssh config from host for repo access
+      - ${HOME}/.gitconfig:/home/node/.gitconfig:ro
+      - ${HOME}/.ssh:/home/node/.ssh:ro
+
+      # Editor Configuration
+      - ${HOME}/.config/opencode:/home/node/.config/opencode
+
+      # Sepcific File Overrides
+      - ${AGENT_MD:-../../files/AGENTS.md}:/home/node/.claude/CLAUDE.md:ro

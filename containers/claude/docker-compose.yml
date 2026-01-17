@@ -1,0 +1,35 @@
+services:
+  code:
+    image: ${IMAGE}
+    tty: true
+    stdin_open: true
+    working_dir: /workspaces
+    # Keep container running for exec access
+    command: tail -f /dev/null
+    environment:
+      - CLAUDE_CONFIG_DIR=/home/node/.claude
+      - CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+      - CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1
+      - DISABLE_AUTOUPDATER=1
+      - DISABLE_BUG_COMMAND=1
+      - DISABLE_ERROR_REPORTING=1
+      - DISABLE_TELEMETRY=1
+    volumes:
+      # Mount the repository (parent of docker/ directory)
+      - ${REPO}:/workspaces/repo:rw
+      - ${WORKTREES}:/workspaces/worktrees:rw
+      - ${DOCS}:/workspaces/docs:rw
+
+      # Share git and ssh config from host for repo access
+      - ${HOME}/.gitconfig:/home/node/.gitconfig:ro
+      - ${HOME}/.ssh:/home/node/.ssh:ro
+
+      # Editor Configuration
+      - ${HOME}/.claude:/home/node/.claude
+
+      # Sepcific File Overrides
+      - ${CLAUDE_SETTINGS:-${HOME}/.claude/settings.json}:/home/node/.claude/settings.json:ro
+      - ${AGENT_MD:-../../files/AGENTS.md}:/home/node/.claude/CLAUDE.md:ro
+
+      - ${HOME}/.claude/docker.credentials.glm.json:/home/node/.claude/credentials.json
+      - ${HOME}/.config/ccstatusline:/home/node/.config/ccstatusline
