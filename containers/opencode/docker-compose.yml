@@ -18,6 +18,8 @@ services:
 
       # Editor Configuration
       - ${HOME}/.config/opencode:/home/node/.config/opencode
+      - ${HOME}/.local/share/opencode:/home/node/.local/share/opencode
 
       # Sepcific File Overrides
-      - ${AGENT_MD:-../../files/AGENTS.md}:/home/node/.claude/CLAUDE.md:ro
+      - ${AGENTS_MD:-../../files/AGENTS.md}:/workspaces/AGENTS.md:ro
+      

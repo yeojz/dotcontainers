@@ -29,7 +29,7 @@ services:
 
       # Sepcific File Overrides
       - ${CLAUDE_SETTINGS:-${HOME}/.claude/settings.json}:/home/node/.claude/settings.json:ro
-      - ${AGENT_MD:-../../files/AGENTS.md}:/home/node/.claude/CLAUDE.md:ro
+      - ${AGENTS_MD:-../../files/AGENTS.md}:/home/node/.claude/CLAUDE.md:ro
 
       - ${HOME}/.claude/docker.credentials.glm.json:/home/node/.claude/credentials.json
       - ${HOME}/.config/ccstatusline:/home/node/.config/ccstatusline
